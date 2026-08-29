@@ -1,0 +1,4 @@
+# 单包工作区：仅承载 pnpm 设置（v11 从此文件读取 settings）。peers 由宿主提供
+# 实体，类型来自 devDependencies，故关闭自动安装。
+settings:
+  autoInstallPeers: false
