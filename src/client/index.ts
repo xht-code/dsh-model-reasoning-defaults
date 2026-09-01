@@ -52,9 +52,9 @@ export const inject = ['slots', 'remote', 'remote.settings'] as const
 /** settings Remote 的读写方法面（宿主 API Gateway 经 Typert Remote 生成）。 */
 interface RemoteSettings {
   describe(): Promise<RemoteResult<SettingsDescribeValue>>
-  update(
+  replace(
     ns: string,
-    patch: Record<string, unknown>,
+    section: Record<string, unknown>,
     expectedRevision: number | undefined,
   ): Promise<RemoteResult<SettingsNamespaceView>>
 }
@@ -374,7 +374,10 @@ function ReasoningDefaultsSection(_props: { close: () => void }): ReactNode {
     setSaving(true)
     setFeedback(undefined)
     try {
-      const response = await api.update(SETTINGS_NS, { defaults: collapsed }, revisionRef.revision)
+      // 必须走 replace 而非 update：update 是 merge patch，普通对象递归合并、
+      // 省略键不表达删除，删掉的路由会在存储层原样保留并在回读时"复活"；
+      // replace 整段替换 user section，删除才能落盘。修订号语义两种写法一致。
+      const response = await api.replace(SETTINGS_NS, { defaults: collapsed }, revisionRef.revision)
       if (!response.ok) {
         setFeedback({ kind: 'error', text: response.error.message })
         return

@@ -1,6 +1,6 @@
 {
   "name": "dsh-model-reasoning-defaults",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DSH (DeepSeek Harness) 插件：为每个 LLM 模型配置默认推理等级（reasoningEffort），并在请求进入底层调用链前按路由规则自动补齐",
   "keywords": [
     "dsh",

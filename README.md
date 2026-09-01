@@ -217,7 +217,7 @@ llm-deepseek:
 
 本插件包含 Web 客户端扩展（`src/client/index.ts`）：
 - 注册到 DSH 设置页槽位 `settings.section`（「推理等级默认」面板）：增删路由行、从已知等级集合下拉选择，保存写入本插件的 `model-reasoning-defaults` 设置命名空间。
-- 数据经宿主统一 settings Remote（`remote.settings.describe` / `update`）实时读取渲染；保存携带 `expectedRevision` 修订号，并发编辑时由宿主裁决而非静默覆盖。
+- 数据经宿主统一 settings Remote（`remote.settings.describe` / `replace`）实时读取渲染；保存携带 `expectedRevision` 修订号，并发编辑时由宿主裁决而非静默覆盖。保存走 `replace`（整段替换）而非 `update`（merge patch）：merge 语义下省略键不表达删除，删除的路由会被存储层原样保留。
 - 路由键输入带建议弹层（来自 `llm-pi-ai` / `llm-deepseek` 已配置的 Provider/Model），面板内展示匹配语义与生效优先级说明。
 
 ---
