@@ -1,0 +1,29 @@
+# bundle patch 层：向 profile 插入本插件入口行。
+# 该 entry 的 config 既可由设置页写入，也可在用户层按同一 entry id 覆盖
+# （include 补丁体系按 id 定位）；config 支持结构化 providers/models、
+# 扁平 defaults 字典或两者混用：
+#
+# - id: model-reasoning-defaults
+#   config:
+#     # 结构化 providers / models 层级
+#     providers:
+#       my-gateway:
+#         reasoningEffort: medium
+#         models:
+#           deepseek-reasoner: high
+#     models:
+#       o3-mini: high
+#     reasoningEffort: low
+#
+#     # 扁平路由映射字典（与结构化产生同键时覆盖结构化项）。
+#     # 设置页只编辑这一段：它声明为 volatile，宿主原地更新引用，
+#     # 保存后无需重载插件即可对新请求生效。
+#     defaults:
+#       "my-gateway:deepseek-reasoner": high
+#       "my-gateway:*": medium
+#       "*:o3-mini": high
+#       "*": low
+
+- insert:
+    - id: model-reasoning-defaults
+      name: dsh-model-reasoning-defaults
